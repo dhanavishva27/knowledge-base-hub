@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Upload - Knowledge Base Hub</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f6f8;
+
+            color: #1f2937;
+        }
+
+        .navbar {
+
+            background: #111827;
+
+            color: white;
+
+            padding: 18px 40px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+
+            font-size: 22px;
+        }
+
+        .nav-links {
+            display: flex;
+
+            gap: 20px;
+        }
+
+        .nav-links a {
+
+            color: white;
+
+            text-decoration: none;
+        }
+
+        .container {
+
+            max-width: 800px;
+
+            margin: 60px auto;
+
+            padding: 20px;
+        }
+
+        .card {
+
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px
+                rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .description {
+
+            color: #6b7280;
+
+            line-height: 1.6;
+
+        }
+
+        form {
+
+            margin-top: 30px;
+        }
+
+        input[type="file"] {
+
+            width: 100%;
+
+            padding: 15px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 8px;
+
+            background: white;
+
+        }
+
+        button {
+
+            margin-top: 20px;
+
+            padding: 14px 25px;
+
+            background: #111827;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+        }
+
+        button:hover {
+
+            background: #374151;
+
+        }
+
+        .message {
+
+            padding: 15px;
+
+            margin-bottom: 15px;
+
+            border-radius: 8px;
+
+            background: #ecfdf5;
+
+            border: 1px solid #a7f3d0;
+
+        }
+
+        .error {
+
+            background: #fee2e2;
+
+            border: 1px solid #fecaca;
+
+        }
+
+        .help {
+
+            margin-top: 15px;
+
+            font-size: 14px;
+
+            color: #6b7280;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <nav class="navbar">
+
+        <h1>
+            Knowledge Base Hub
+        </h1>
+
+        <div class="nav-links">
+
+            <a href="/">
+                Search
+            </a>
+
+            <a href="/upload/">
+                Upload
+            </a>
+
+            <a href="/api/urls/"
+               target="_blank">
+                API
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <div class="card">
+
+            <h2>
+                Upload Knowledge Base URLs
+            </h2>
+
+            <p class="description">
+
+                Upload a CSV or Excel file containing
+                a <strong>URL</strong> column.
+
+                The system will automatically scrape
+                the URLs, extract text, create chunks,
+                generate embeddings, and update the
+                FAISS search index.
+
+            </p>
+
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="message
+                        {% if message.tags == 'error' %}
+                            error
+                        {% endif %}
+                    ">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <button type="submit">
+
+                    Upload & Process
+
+                </button>
+
+            </form>
+
+
+            <div class="help">
+
+                Supported formats:
+                <strong>.csv</strong> and
+                <strong>.xlsx</strong>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

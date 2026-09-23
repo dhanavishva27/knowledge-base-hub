@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Knowledge Base Hub</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #1f2937;
+        }
+
+        /* ---------------- NAVBAR ---------------- */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------------- MAIN ---------------- */
+
+        .container {
+            max-width: 950px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .hero h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        /* ---------------- SEARCH ---------------- */
+
+        .search-container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 12px;
+        }
+
+        #question {
+            flex: 1;
+
+            padding: 15px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            outline: none;
+        }
+
+        #question:focus {
+            border-color: #111827;
+        }
+
+        #search-button {
+            padding: 15px 25px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #111827;
+            color: white;
+
+            font-size: 15px;
+
+            cursor: pointer;
+        }
+
+        #search-button:hover {
+            background: #374151;
+        }
+
+        #search-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        /* ---------------- LOADING ---------------- */
+
+        #loading {
+            display: none;
+
+            margin-top: 20px;
+
+            text-align: center;
+
+            color: #6b7280;
+        }
+
+        /* ---------------- RESULTS ---------------- */
+
+        #results {
+            margin-top: 30px;
+        }
+
+        .card {
+            background: white;
+
+            padding: 25px;
+
+            margin-bottom: 20px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .answer {
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        /* ---------------- SOURCES ---------------- */
+
+        .source {
+            border: 1px solid #e5e7eb;
+
+            padding: 16px;
+
+            border-radius: 8px;
+
+            margin-top: 12px;
+        }
+
+        .source-title {
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        .source a {
+            color: #2563eb;
+
+            text-decoration: none;
+
+            word-break: break-all;
+        }
+
+        .source a:hover {
+            text-decoration: underline;
+        }
+
+        .score {
+            margin-top: 8px;
+
+            font-size: 13px;
+
+            color: #6b7280;
+        }
+
+        /* ---------------- ERROR ---------------- */
+
+        .error {
+            color: #b91c1c;
+
+            background: #fee2e2;
+
+            border: 1px solid #fecaca;
+
+            padding: 15px;
+
+            border-radius: 8px;
+        }
+
+        /* ---------------- RESPONSIVE ---------------- */
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            #search-button {
+                width: 100%;
+            }
+
+            .hero h2 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- NAVIGATION -->
+
+    <nav class="navbar">
+
+        <h1>
+            Knowledge Base Hub
+        </h1>
+
+        <div class="nav-links">
+
+            <a href="/">
+                Search
+            </a>
+
+            <a href="/upload/">
+                Upload
+            </a>
+
+            <a href="/api/urls/"
+               target="_blank">
+                API
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- MAIN -->
+
+    <main class="container">
+
+        <div class="hero">
+
+            <h2>
+                Ask Your Knowledge Base
+            </h2>
+
+            <p>
+                Search information from your uploaded
+                company and leadership documents.
+            </p>
+
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <div class="search-container">
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="question"
+                    placeholder="Example: Who is the CEO of Apple?"
+                >
+
+                <button
+                    id="search-button"
+                    onclick="searchKnowledgeBase()"
+                >
+                    Search
+                </button>
+
+            </div>
+
+
+            <div id="loading">
+                Searching knowledge base...
+            </div>
+
+        </div>
+
+
+        <!-- RESULTS -->
+
+        <div id="results"></div>
+
+    </main>
+
+
+    <script>
+
+        async function searchKnowledgeBase() {
+
+            const question =
+                document
+                .getElementById("question")
+                .value
+                .trim();
+
+            const button =
+                document
+                .getElementById("search-button");
+
+            const loading =
+                document
+                .getElementById("loading");
+
+            const results =
+                document
+                .getElementById("results");
+
+
+            // ----------------------------
+            // Validate
+            // ----------------------------
+
+            if (!question) {
+
+                results.innerHTML = `
+                    <div class="card">
+                        <div class="error">
+                            Please enter a question.
+                        </div>
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            // ----------------------------
+            // Loading
+            // ----------------------------
+
+            button.disabled = true;
+
+            loading.style.display = "block";
+
+            results.innerHTML = "";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/search/?q=${encodeURIComponent(question)}`
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.error ||
+                        "Search failed."
+                    );
+
+                }
+
+
+                // ----------------------------
+                // Answer
+                // ----------------------------
+
+                let html = `
+
+                    <div class="card">
+
+                        <h3>
+                            Answer
+                        </h3>
+
+                        <div class="answer">
+                            ${escapeHtml(data.answer)}
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                // ----------------------------
+                // Sources
+                // ----------------------------
+
+                if (
+                    data.sources &&
+                    data.sources.length > 0
+                ) {
+
+                    html += `
+
+                        <div class="card">
+
+                            <h3>
+                                Sources
+                            </h3>
+
+                    `;
+
+
+                    data.sources.forEach(
+                        source => {
+
+                            html += `
+
+                                <div class="source">
+
+                                    <div class="source-title">
+
+                                        ${escapeHtml(
+                                            source.title ||
+                                            "Untitled source"
+                                        )}
+
+                                    </div>
+
+                                    <a
+                                        href="${escapeAttribute(
+                                            source.url
+                                        )}"
+                                        target="_blank"
+                                    >
+                                        ${escapeHtml(
+                                            source.url
+                                        )}
+                                    </a>
+
+                                    <div class="score">
+
+                                        Similarity:
+                                        ${Number(
+                                            source.score
+                                        ).toFixed(3)}
+
+                                    </div>
+
+                                </div>
+
+                            `;
+
+                        }
+                    );
+
+
+                    html += `</div>`;
+
+                }
+
+
+                results.innerHTML = html;
+
+
+            }
+            catch (error) {
+
+                results.innerHTML = `
+
+                    <div class="card">
+
+                        <div class="error">
+
+                            ${escapeHtml(
+                                error.message
+                            )}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+            finally {
+
+                button.disabled = false;
+
+                loading.style.display = "none";
+
+            }
+
+        }
+
+
+        // ----------------------------
+        // Enter key
+        // ----------------------------
+
+        document
+            .getElementById("question")
+            .addEventListener(
+                "keydown",
+                function(event) {
+
+                    if (
+                        event.key === "Enter"
+                    ) {
+
+                        searchKnowledgeBase();
+
+                    }
+
+                }
+            );
+
+
+        // ----------------------------
+        // Security helpers
+        // ----------------------------
+
+        function escapeHtml(value) {
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        function escapeAttribute(value) {
+
+            return String(value)
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+    </script>
+
+</body>
+
+</html>
