@@ -1,0 +1,25 @@
+HTTP 200 OK
+Allow: OPTIONS, GET
+Content-Type: application/json
+Vary: Accept
+
+{
+    "answer": "John Ternus is the CEO of Apple.",
+    "sources": [
+        {
+            "url": "https://www.apple.com/in/leadership/",
+            "title": "Apple Leadership - Apple (IN)",
+            "score": 0.6603859663009644
+        },
+        {
+            "url": "https://theorg.com/org/perplexity/teams/leadership-team",
+            "title": "Perplexity | The Org",
+            "score": 0.3557901382446289
+        },
+        {
+            "url": "https://www.oracle.com/in/corporate/executives/",
+            "title": "Executive Leadership | Oracle India",
+            "score": 0.30644166469573975
+        }
+    ]
+}
