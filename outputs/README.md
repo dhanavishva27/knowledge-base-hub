@@ -1,4 +1,3 @@
-Create:
 
 ```markdown
 # Output Files
